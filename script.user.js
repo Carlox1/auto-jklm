@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         auto-jklm
 // @namespace    http://tampermonkey.net/
-// @version      1.3.1
+// @version      1.3.2
 // @updateURL    https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @downloadURL  https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @description  Automatiza ciertas acciones en jklm.fun
