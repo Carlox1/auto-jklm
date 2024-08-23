@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         auto-jklm
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
-// @updateURL    https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.js
-// @downloadURL  https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.js
+// @version      1.2.2
+// @updateURL    https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
+// @downloadURL  https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @description  Automatiza ciertas acciones en jklm.fun
 // @icon         https://jklm.fun/images/icon512.png
 // @author       Carlox
@@ -12,7 +12,7 @@
 // ==/UserScript==
 let words = []
 let usedWords = []
-let panelEl = null
+let panelEl = nulls
 let lastWord = ""
 
 async function getWordsDictionary() {
