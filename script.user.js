@@ -64,8 +64,8 @@ function getWords(syllable) {
 function getSpecialWords(words) {
     console.time("getSpecialWords")
     const specialWords = []
-    const bonnusLetters = milestone.playerStatesByPeerId[selfPeerId].bonusLetters
-    const bonus = Object.keys(bonnusLetters).filter(letter => bonusLetters[letter] > 0)
+    const bonusLetters = milestone.playerStatesByPeerId[selfPeerId].bonusLetters
+    const bonus = Object.keys(bonusLetters).filter(letter => bonusLetters[letter] > 0)
     words.forEach(word => {
         const bonusCount = Array.from(new Set(word)).filter(letter => bonus.includes(letter)).length
         if (bonusCount >= 2) specialWords.push({
