@@ -100,6 +100,10 @@ function resetGame() {
 (async function () {
     words = await getWordsDictionary();
 
+    setTimeout(() => {
+        if (!panelEl) createPanel()
+    }, 5000);
+
     socket.on("setMilestone", (data) => {
         if (wasSelfTurn) getWords(milestone.syllable)
         if (data?.name == "seating") resetGame()
@@ -110,10 +114,6 @@ function resetGame() {
     });
 
     socket.once("setup", async () => {
-        while (true) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            if (document.querySelector("body")) break;
-        }
         createPanel()
     })
 
