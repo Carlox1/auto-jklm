@@ -12,8 +12,9 @@
 // ==/UserScript==
 let words = []
 let usedWords = []
-let panelEl = nulls
+let panelEl = null
 let lastWord = ""
+
 
 async function getWordsDictionary() {
     const response = await fetch('https://raw.githubusercontent.com/Carlox1/auto-jklm/main/validatedWords.json');
@@ -60,6 +61,7 @@ function getWords(syllable) {
 
 
 function createPanel() {
+    if (panelEl) return
     const containerEl = document.querySelector("body")
 
     panelEl = document.createElement("div")
@@ -107,10 +109,12 @@ function resetGame() {
         if (wasSelfTurn) getWords(milestone.syllable)
     });
 
-    socket.on("setup", () => {
-        setTimeout(() => {
-            createPanel()
-        }, 1000);
+    socket.once("setup", async () => {
+        while (true) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (document.querySelector("body")) break;
+        }
+        createPanel()
     })
 
     socket.on('setPlayerWord', (_, word) => {
