@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         auto-jklm
 // @namespace    http://tampermonkey.net/
-// @version      1.3.4
+// @version      1.3.5
 // @updateURL    https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @downloadURL  https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @description  Automatiza ciertas acciones en jklm.fun
@@ -13,6 +13,8 @@
 let words = []
 let usedWords = []
 let panelEl = null
+let wordsContainer = null
+let specialWordsContainer = null
 let lastWord = ""
 
 
@@ -41,7 +43,7 @@ function getWords(syllable) {
     console.time("getWords")
     const filteredWords = words.filter(w => w.includes(syllable) && !usedWords.includes(w));
     
-    panelEl.innerHTML = ""
+    wordsContainer.innerHTML = ""
     filteredWords.slice(0, 20).forEach(word => {
         const wordBtn = document.createElement("button")
         wordBtn.className = "styled joinRound"
@@ -54,7 +56,7 @@ function getWords(syllable) {
             simulateHumanInput(inputEl, word)
         })
 
-        panelEl.appendChild(wordBtn)
+        wordsContainer.appendChild(wordBtn)
     })
     console.timeEnd("getWords")
     getSpecialWords(filteredWords)
@@ -74,13 +76,14 @@ function getSpecialWords(words) {
         })
     })
 
+    specialWordsContainer.innerHTML = ""
     specialWords.sort((a, b) => b.bonusCount - a.bonusCount).slice(0, 10).forEach(word => {
         const wordBtn = document.createElement("button")
         wordBtn.className = "styled joinRound"
-        wordBtn.innerHTML = `<span style="text-decoration: underline">${word.word}</span><span style="color: #ff0">  +${word.bonusCount}</span>`
+        wordBtn.innerHTML = `<span>${word.word}</span><span style="color: #444444; margin-left: 2px">+${word.bonusCount}</span>`
         wordBtn.style.height = "fit-content"
         wordBtn.style.display = "flex"
-        wordBtn.style.backgroundColor = "orange"
+        wordBtn.style.backgroundColor = "#ddbb66"
 
         wordBtn.addEventListener("click", () => {
             if (!wasSelfTurn) return
@@ -88,7 +91,7 @@ function getSpecialWords(words) {
             simulateHumanInput(inputEl, word.word)
         })
 
-        panelEl.appendChild(wordBtn)
+        specialWordsContainer.appendChild(wordBtn)
     })
     console.timeEnd("getSpecialWords")
 }
@@ -103,31 +106,68 @@ function createPanel() {
     panelEl.style.height = "100%"
     panelEl.style.backgroundColor = "rgb(32, 32, 32)"
     panelEl.style.display = "flex"
-    panelEl.style.flexWrap = "wrap"
-    panelEl.style.alignContent = "flex-start"
-    panelEl.style.gap = "4px"
+    panelEl.style.flexDirection = "column"
+    panelEl.style.gap = "8px"
     panelEl.style.padding = "8px"
+    panelEl.style.color = "white"
 
-    panelEl.innerHTML = `
+    wordsContainer = document.createElement("div")
+    wordsContainer.style.width = "100%"
+    wordsContainer.style.height = "45%"
+    wordsContainer.style.overflowY = "auto"
+    wordsContainer.style.display = "flex"
+    wordsContainer.style.flexWrap = "wrap"
+    wordsContainer.style.gap = "4px"
+    wordsContainer.style.alignContent = "flex-start"
+    wordsContainer.style.backgroundColor = "rgb(48, 48, 48)"
+    wordsContainer.style.padding = "8px"
+    wordsContainer.style.borderRadius = "8px"
+
+    specialWordsContainer = document.createElement("div")
+    specialWordsContainer.style.width = "100%"
+    specialWordsContainer.style.height = "45%"
+    specialWordsContainer.style.overflowY = "auto"
+    specialWordsContainer.style.display = "flex"
+    specialWordsContainer.style.flexWrap = "wrap"
+    specialWordsContainer.style.gap = "4px"
+    specialWordsContainer.style.alignContent = "flex-start"
+    specialWordsContainer.style.backgroundColor = "rgb(48, 48, 48)"
+    specialWordsContainer.style.padding = "8px"
+    specialWordsContainer.style.borderRadius = "8px"
+
+    wordsContainer.innerHTML = `
     <button class="styled joinRound" style="height: fit-content;">Made</button>
     <button class="styled joinRound" style="height: fit-content;">by</button>
     <button class="styled joinRound" style="height: fit-content;">:)</button>
     <button class="styled joinRound" style="height: fit-content;">Carlox</button>
     `
 
+    const wordsTitle = document.createElement("p")
+    wordsTitle.innerText = "Palabras:"
+    wordsTitle.style.margin = "0px"
 
+    const specialWordsTitle = document.createElement("p")
+    specialWordsTitle.innerText = "Palabras especiales:"
+    specialWordsTitle.style.margin = "0px"
+    specialWordsTitle.style.marginTop = "10px"
+
+    panelEl.appendChild(wordsTitle)
+    panelEl.appendChild(wordsContainer)
+    panelEl.appendChild(specialWordsTitle)
+    panelEl.appendChild(specialWordsContainer)
     containerEl.prepend(panelEl)
 }
 
 
 function resetGame() {
     usedWords = []
-    panelEl.innerHTML = `
+    wordsContainer.innerHTML = `
     <button class="styled joinRound" style="height: fit-content;">Made</button>
     <button class="styled joinRound" style="height: fit-content;">by</button>
     <button class="styled joinRound" style="height: fit-content;">Carlox</button>
     <button class="styled joinRound" style="height: fit-content;">:)</button>
     `
+    specialWordsContainer.innerHTML = ""
 }
 
 
