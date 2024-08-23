@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         auto-jklm
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.2.1
 // @updateURL    https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.js
 // @downloadURL  https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.js
 // @description  Automatiza ciertas acciones en jklm.fun
+// @icon         https://jklm.fun/images/icon512.png
 // @author       Carlox
 // @match        https://phoenix.jklm.fun/games/bombparty/*
 // @match        falcon.jklm.fun/*
