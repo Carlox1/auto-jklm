@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         auto-jklm
 // @namespace    http://tampermonkey.net/
-// @version      1.3.3
+// @version      1.3.4
 // @updateURL    https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @downloadURL  https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @description  Automatiza ciertas acciones en jklm.fun
@@ -68,18 +68,19 @@ function getSpecialWords(words) {
     const bonus = Object.keys(bonusLetters).filter(letter => bonusLetters[letter] > 0)
     words.forEach(word => {
         const bonusCount = Array.from(new Set(word)).filter(letter => bonus.includes(letter)).length
-        if (bonusCount >= 2) specialWords.push({
+        if (bonusCount >= 1) specialWords.push({
             word,
             bonusCount
         })
     })
 
-    specialWords.sort((a, b) => b.bonusCount - a.bonusCount).slice(0, 20).forEach(word => {
+    specialWords.sort((a, b) => b.bonusCount - a.bonusCount).slice(0, 10).forEach(word => {
         const wordBtn = document.createElement("button")
         wordBtn.className = "styled joinRound"
-        wordBtn.innerHTML = `<span style="text-decoration: underline">${word.word}</span><span style="color: #ff0"> +${word.bonusCount}</span>`
+        wordBtn.innerHTML = `<span style="text-decoration: underline">${word.word}</span><span style="color: #ff0">  +${word.bonusCount}</span>`
         wordBtn.style.height = "fit-content"
         wordBtn.style.display = "flex"
+        wordBtn.style.backgroundColor = "orange"
 
         wordBtn.addEventListener("click", () => {
             if (!wasSelfTurn) return
