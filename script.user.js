@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         auto-jklm
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.3.1
 // @updateURL    https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @downloadURL  https://raw.githubusercontent.com/Carlox1/auto-jklm/main/script.user.js
 // @description  Automatiza ciertas acciones en jklm.fun
@@ -39,10 +39,10 @@ async function simulateHumanInput(el, value) {
 
 function getWords(syllable) {
     console.time("getWords")
-    const filteredWords = words.filter(w => w.includes(syllable) && !usedWords.includes(w)).slice(0, 20);
+    const filteredWords = words.filter(w => w.includes(syllable) && !usedWords.includes(w));
     
     panelEl.innerHTML = ""
-    filteredWords.forEach(word => {
+    filteredWords.slice(0, 20).forEach(word => {
         const wordBtn = document.createElement("button")
         wordBtn.className = "styled joinRound"
         wordBtn.innerHTML = word.split(syllable).join(`<span style="text-decoration: underline">${syllable}</span>`)
@@ -57,6 +57,37 @@ function getWords(syllable) {
         panelEl.appendChild(wordBtn)
     })
     console.timeEnd("getWords")
+    getSpecialWords(filteredWords)
+}
+
+
+function getSpecialWords(words) {
+    console.time("getSpecialWords")
+    const specialWords = []
+    words.forEach(word => {
+        const bonusCount = Array.from(new Set(word)).filter(letter => bonus.includes(letter)).length
+        if (bonusCount >= 2) specialWords.push({
+            word,
+            bonusCount
+        })
+    })
+
+    specialWords.sort((a, b) => b.bonusCount - a.bonusCount).slice(0, 20).forEach(word => {
+        const wordBtn = document.createElement("button")
+        wordBtn.className = "styled joinRound"
+        wordBtn.innerHTML = `<span style="text-decoration: underline">${word.word}</span><span style="color: #ff0"> +${word.bonusCount}</span>`
+        wordBtn.style.height = "fit-content"
+        wordBtn.style.display = "flex"
+
+        wordBtn.addEventListener("click", () => {
+            if (!wasSelfTurn) return
+            const inputEl = document.querySelector("form > input")
+            simulateHumanInput(inputEl, word.word)
+        })
+
+        panelEl.appendChild(wordBtn)
+    })
+    console.timeEnd("getSpecialWords")
 }
 
 
