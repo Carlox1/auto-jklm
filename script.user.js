@@ -133,7 +133,7 @@ function resetGame() {
 
     setTimeout(() => {
         if (!panelEl) createPanel()
-    }, 5000);
+    }, 2000);
 
     socket.on("setMilestone", (data) => {
         if (wasSelfTurn) getWords(milestone.syllable)
